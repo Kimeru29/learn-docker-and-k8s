@@ -52,18 +52,50 @@ else
     echo "No images to remove."
 fi
 
+# Remove Compose projects
+if docker compose version &> /dev/null; then
+    echo ""
+    COMPOSE_PROJECTS=$(docker compose ls --filter "label=app=learn-docker-k8s" -q 2>/dev/null || true)
+    if [ -n "$COMPOSE_PROJECTS" ]; then
+        echo "Removing Compose projects..."
+        for project in $COMPOSE_PROJECTS; do
+            docker compose -p "$project" down -v 2>/dev/null
+        done
+        echo "  Done."
+    else
+        echo "No Compose projects to remove."
+    fi
+fi
+
 # K8s cleanup (if kubectl available)
 if command -v kubectl &> /dev/null; then
     echo ""
-    NAMESPACES=$(kubectl get namespaces -o name 2>/dev/null | grep "^namespace/learn-ch0" || true)
+    # Match all learn-ch* namespaces (not just ch0X)
+    NAMESPACES=$(kubectl get namespaces -o name 2>/dev/null | grep "^namespace/learn-ch" || true)
     if [ -n "$NAMESPACES" ]; then
         echo "Removing Kubernetes namespaces..."
         for ns in $NAMESPACES; do
+            echo "  Deleting $ns..."
             kubectl delete "$ns" --timeout=60s 2>/dev/null
         done
         echo "  Done."
     else
         echo "No Kubernetes namespaces to remove."
+    fi
+
+    # Clean up kind clusters
+    if command -v kind &> /dev/null; then
+        CLUSTERS=$(kind get clusters 2>/dev/null | grep "^learn-" || true)
+        if [ -n "$CLUSTERS" ]; then
+            echo "Removing kind clusters..."
+            for cluster in $CLUSTERS; do
+                echo "  Deleting $cluster..."
+                kind delete cluster --name "$cluster" 2>/dev/null
+            done
+            echo "  Done."
+        else
+            echo "No kind clusters to remove."
+        fi
     fi
 fi
 

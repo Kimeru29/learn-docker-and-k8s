@@ -1,0 +1,462 @@
+# Curriculum Map — Learn Docker & Kubernetes
+# This file defines the world/chapter/track structure, prerequisites, and competency areas.
+# The AI engine reads this to understand progression, unlock conditions, and adaptive recommendations.
+
+version: 2
+structure: worlds     # worlds (linear within, parallel between advanced), deep-dives (optional)
+
+# ─── Competency Areas ─────────────────────────────────────────────────────────
+# Each challenge maps to one or more competencies. The engine tracks mastery per area.
+competencies:
+  docker-cli:
+    label: Docker CLI
+    description: Container lifecycle commands, image management, system inspection
+  dockerfile:
+    label: Dockerfile Engineering
+    description: Image builds, layers, caching, multi-stage, security hardening
+  container-runtime:
+    label: Container Runtime Internals
+    description: Namespaces, cgroups, PID 1, signals, OCI, containerd, runc
+  docker-networking:
+    label: Docker Networking
+    description: Bridge networks, DNS, port mapping, network isolation, troubleshooting
+  docker-storage:
+    label: Docker Storage
+    description: Volumes, bind mounts, tmpfs, OverlayFS, permissions
+  docker-compose:
+    label: Docker Compose
+    description: Multi-service orchestration, health checks, profiles, secrets, overrides
+  docker-security:
+    label: Docker Security
+    description: Non-root, capabilities, read-only FS, secret management, supply chain
+  docker-troubleshooting:
+    label: Docker Troubleshooting
+    description: Systematic diagnosis using logs, inspect, exec, stats, events, exit codes
+  k8s-architecture:
+    label: Kubernetes Architecture
+    description: Control plane, nodes, reconciliation, API objects, declarative state
+  k8s-workloads:
+    label: Kubernetes Workloads
+    description: Pods, Deployments, ReplicaSets, StatefulSets, DaemonSets, Jobs, CronJobs
+  k8s-networking:
+    label: Kubernetes Networking
+    description: Services, Ingress, CoreDNS, NetworkPolicies, CNI concepts
+  k8s-storage:
+    label: Kubernetes Storage
+    description: PV, PVC, StorageClasses, dynamic provisioning, StatefulSet storage
+  k8s-configuration:
+    label: Kubernetes Configuration
+    description: ConfigMaps, Secrets, env injection, init containers, sidecars, lifecycle hooks
+  k8s-health:
+    label: Health & Reliability
+    description: Probes, PDB, rolling updates, rollback, deployment strategies
+  k8s-scheduling:
+    label: Scheduling & Resources
+    description: Requests, limits, node selectors, affinity, taints, tolerations, HPA
+  k8s-security:
+    label: Kubernetes Security
+    description: RBAC, ServiceAccounts, security contexts, Pod Security Standards, NetworkPolicies
+  observability:
+    label: Observability
+    description: Logs, metrics, traces, Prometheus, Grafana, OpenTelemetry
+  delivery:
+    label: Delivery & Deployment
+    description: CI pipelines, registries, tagging, Helm, Kustomize, GitOps concepts
+  incident-response:
+    label: Incident Response
+    description: Triage, blast radius, mitigation, rollback, postmortems, runbooks
+  linux-fundamentals:
+    label: Linux Fundamentals
+    description: Processes, signals, users, permissions, mounts, /proc, env vars
+  networking-fundamentals:
+    label: Networking Fundamentals
+    description: TCP/UDP, DNS, subnets, NAT, routing, TLS, load balancing, L4 vs L7
+
+# ─── Worlds ───────────────────────────────────────────────────────────────────
+
+worlds:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WORLD 1: Docker Foundations (Beginner, Linear)
+  # ═══════════════════════════════════════════════════════════════════════════
+  world-1-docker-foundations:
+    title: "Docker Foundations"
+    subtitle: "From zero to containerized"
+    difficulty: beginner
+    progression: linear
+    estimated_hours: 8-12
+    description: >
+      Learn what containers are, how to build production-quality images,
+      persist data, and connect containers. You'll go from "what is Docker?"
+      to running multi-container applications with proper networking and storage.
+    story_arc: >
+      Your first week at NoCappuccino. Dave's apps keep breaking,
+      data keeps disappearing, and Demo Day is approaching fast.
+    chapters:
+      - id: ch01-containers
+        title: "It Works on My Machine"
+        subtitle: Container Basics
+        lessons: 3
+        challenges: 3
+        competencies: [docker-cli, container-runtime, linux-fundamentals]
+        prerequisites: []
+        story: "Dave's API crashes on staging. Time to learn what containers actually are."
+
+      - id: ch02-images
+        title: "The 2GB Espresso"
+        subtitle: Image Engineering
+        lessons: 4  # Added BuildKit & advanced caching lesson
+        challenges: 3
+        competencies: [dockerfile, docker-cli, linux-fundamentals]
+        prerequisites: [ch01-containers]
+        story: "The Bean-Tracker image is 2GB. Deploys take forever. Marcus is furious."
+
+      - id: ch03-storage
+        title: "The Vanishing Beans"
+        subtitle: Container Storage
+        lessons: 3
+        challenges: 3
+        competencies: [docker-storage, linux-fundamentals]
+        prerequisites: [ch01-containers]
+        story: "Customer data vanished. Dave restarted the database container."
+
+      - id: ch04-networking
+        title: "The Silent Grinder"
+        subtitle: Container Networking
+        lessons: 4  # Added deep networking lesson
+        challenges: 3
+        competencies: [docker-networking, networking-fundamentals]
+        prerequisites: [ch01-containers]
+        story: "Demo in 2 hours. Frontend can't find backend."
+
+    boss:
+      id: boss-docker-diagnosis
+      title: "The Morning From Hell"
+      subtitle: Docker Capstone
+      challenges: 1
+      competencies: [docker-cli, dockerfile, docker-storage, docker-networking, docker-troubleshooting]
+      prerequisites: [ch01-containers, ch02-images, ch03-storage, ch04-networking]
+      story: >
+        A multi-container system has 4 simultaneous problems: a bloated image,
+        a data loss bug, a networking failure, and a port conflict. Diagnose and
+        fix them all before the morning standup.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WORLD 2: Docker Engineering (Intermediate, Linear)
+  # ═══════════════════════════════════════════════════════════════════════════
+  world-2-docker-engineering:
+    title: "Docker Engineering"
+    subtitle: "From containers to production systems"
+    difficulty: intermediate
+    progression: linear
+    estimated_hours: 10-14
+    description: >
+      Move from individual containers to production-grade multi-container systems.
+      Learn Docker Compose, process management, systematic troubleshooting,
+      and container security.
+    story_arc: >
+      NoCappuccino is growing. New devs join, systems get complex,
+      and security auditors are asking uncomfortable questions.
+    prerequisites: [world-1-docker-foundations]
+    chapters:
+      - id: ch05-compose
+        title: "The Symphony of Steam"
+        subtitle: Docker Compose
+        lessons: 4
+        challenges: 4
+        competencies: [docker-compose, docker-networking, docker-storage]
+        prerequisites: [ch04-networking, ch03-storage]
+        story: "15 docker run commands. New devs take 3 days to set up. There must be a better way."
+
+      - id: ch06-process-management
+        title: "The Zombie Barista"
+        subtitle: Container Process Management
+        lessons: 3
+        challenges: 3
+        competencies: [container-runtime, linux-fundamentals, docker-troubleshooting]
+        prerequisites: [ch01-containers, ch02-images]
+        story: "Containers keep dying, won't stop gracefully, and something about zombie processes..."
+
+      - id: ch07-troubleshooting
+        title: "The Debugging Grind"
+        subtitle: Systematic Docker Troubleshooting
+        lessons: 3
+        challenges: 4
+        competencies: [docker-troubleshooting, docker-cli, container-runtime]
+        prerequisites: [ch05-compose, ch06-process-management]
+        story: "Sarah teaches you the diagnostic workflow she uses at 3 AM."
+
+      - id: ch08-docker-security
+        title: "The Audit"
+        subtitle: Docker Security
+        lessons: 3
+        challenges: 3
+        competencies: [docker-security, dockerfile, container-runtime]
+        prerequisites: [ch02-images, ch06-process-management]
+        story: "A security auditor found root containers, leaked secrets in layers, and no resource limits."
+
+    boss:
+      id: boss-production-docker
+      title: "The Full Stack Meltdown"
+      subtitle: Docker Production Capstone
+      challenges: 1
+      competencies: [docker-compose, docker-security, docker-troubleshooting, container-runtime]
+      prerequisites: [ch05-compose, ch06-process-management, ch07-troubleshooting, ch08-docker-security]
+      story: >
+        NoCappuccino's entire Compose stack has degraded: services crash on startup,
+        a memory leak is killing the host, secrets are exposed, and the build pipeline
+        pushes 3GB images. Harden the whole system before the next deploy.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WORLD 3: Kubernetes Core (Intermediate, Linear)
+  # ═══════════════════════════════════════════════════════════════════════════
+  world-3-kubernetes-core:
+    title: "Kubernetes Core"
+    subtitle: "From one host to a cluster"
+    difficulty: intermediate
+    progression: linear
+    estimated_hours: 12-16
+    description: >
+      Understand why orchestration exists, learn the Kubernetes architecture,
+      deploy workloads, configure networking and storage, and manage application
+      configuration. By the end you'll be comfortable operating a K8s cluster.
+    story_arc: >
+      A viral tweet melted the single Docker host. One machine isn't enough.
+      Time to learn orchestration.
+    prerequisites: [world-2-docker-engineering]
+    chapters:
+      - id: ch09-k8s-architecture
+        title: "The Giant Roaster"
+        subtitle: Kubernetes Architecture & First Deployment
+        lessons: 4
+        challenges: 3
+        competencies: [k8s-architecture, k8s-workloads]
+        prerequisites: [ch05-compose]
+        story: "3 AM. 50K concurrent users. Single Docker host at 100% CPU. Time for Kubernetes."
+
+      - id: ch10-workloads
+        title: "The Fleet"
+        subtitle: Kubernetes Workload Types
+        lessons: 3
+        challenges: 3
+        competencies: [k8s-workloads, k8s-configuration]
+        prerequisites: [ch09-k8s-architecture]
+        story: "Not everything is a Deployment. Background jobs, daemons, stateful services need different patterns."
+
+      - id: ch11-k8s-networking
+        title: "The Service Mesh"
+        subtitle: Kubernetes Networking
+        lessons: 4
+        challenges: 4
+        competencies: [k8s-networking, networking-fundamentals]
+        prerequisites: [ch09-k8s-architecture]
+        story: "Pod IPs change. Services disappear. DNS doesn't resolve. Let's fix cluster networking."
+
+      - id: ch12-k8s-storage
+        title: "The Persistent Roast"
+        subtitle: Kubernetes Storage
+        lessons: 3
+        challenges: 3
+        competencies: [k8s-storage, k8s-workloads]
+        prerequisites: [ch10-workloads]
+        story: "The database pod restarted and lost everything. Sound familiar? Kubernetes volumes work differently."
+
+    boss:
+      id: boss-k8s-incident
+      title: "The Cluster Crisis"
+      subtitle: Kubernetes Core Capstone
+      challenges: 1
+      competencies: [k8s-architecture, k8s-workloads, k8s-networking, k8s-storage, k8s-configuration]
+      prerequisites: [ch09-k8s-architecture, ch10-workloads, ch11-k8s-networking, ch12-k8s-storage]
+      story: >
+        Multiple K8s issues simultaneously: a Deployment stuck in CrashLoopBackOff,
+        a Service that routes to nowhere, a PVC stuck in Pending, and a ConfigMap
+        with the wrong data. Triage them all.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WORLD 4: Kubernetes Production (Advanced, Semi-parallel)
+  # ═══════════════════════════════════════════════════════════════════════════
+  world-4-kubernetes-production:
+    title: "Kubernetes Production"
+    subtitle: "Running K8s like you mean it"
+    difficulty: advanced
+    progression: semi-parallel  # ch13-ch15 can be done in any order
+    estimated_hours: 12-16
+    description: >
+      Learn to run production-grade Kubernetes: health probes, deployment strategies,
+      resource management, scheduling, autoscaling, and security hardening.
+    story_arc: >
+      NoCappuccino's K8s cluster is running, but it's fragile. Time to make it
+      production-ready before the next incident.
+    prerequisites: [world-3-kubernetes-core]
+    chapters:
+      - id: ch13-health-reliability
+        title: "The Resilient Brew"
+        subtitle: Health, Probes & Deployment Strategies
+        lessons: 4
+        challenges: 3
+        competencies: [k8s-health, k8s-workloads]
+        prerequisites: [ch09-k8s-architecture, ch10-workloads]
+        story: "Pods say 'Running' but the app inside is dead. Rolling updates cause downtime. Let's fix both."
+
+      - id: ch14-scheduling
+        title: "The Resource Budget"
+        subtitle: Scheduling, Resources & Autoscaling
+        lessons: 3
+        challenges: 3
+        competencies: [k8s-scheduling, k8s-workloads]
+        prerequisites: [ch09-k8s-architecture, ch10-workloads]
+        story: "Pods get OOMKilled, nodes run hot, and the HPA isn't scaling. Resource management time."
+
+      - id: ch15-k8s-security
+        title: "The Lockdown"
+        subtitle: Kubernetes Security
+        lessons: 4
+        challenges: 3
+        competencies: [k8s-security, k8s-networking]
+        prerequisites: [ch09-k8s-architecture, ch11-k8s-networking]
+        story: "Anyone can kubectl exec into any pod. Database credentials are in plain YAML. Time for RBAC."
+
+    boss:
+      id: boss-great-latte-leak
+      title: "The Great Latte Leak"
+      subtitle: Production Kubernetes Capstone
+      challenges: 1
+      competencies: [k8s-health, k8s-scheduling, k8s-security, k8s-configuration, incident-response]
+      prerequisites: [ch13-health-reliability, ch14-scheduling, ch15-k8s-security]
+      story: >
+        The finale returns — expanded. Five simultaneous production failures across
+        health, resources, security, networking, and configuration. Dave is unreachable.
+        Marcus is panicking. You've trained for this.
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WORLD 5: Platform Engineering (Advanced, Parallel tracks)
+  # ═══════════════════════════════════════════════════════════════════════════
+  world-5-platform-engineering:
+    title: "Platform Engineering"
+    subtitle: "Beyond running containers"
+    difficulty: advanced
+    progression: parallel  # All three tracks independent
+    estimated_hours: 14-18
+    description: >
+      Learn the practices that surround container orchestration in production:
+      observability, delivery pipelines, and incident response. These are the
+      skills that make the difference between "I can deploy to K8s" and
+      "I can operate a production platform."
+    story_arc: >
+      NoCappuccino is scaling. You need to see inside the system, automate
+      deployments, and handle the inevitable incidents like a professional.
+    prerequisites: [world-4-kubernetes-production]
+    chapters:
+      - id: ch16-observability
+        title: "The Glass Roaster"
+        subtitle: Observability — Logs, Metrics, Traces
+        lessons: 4
+        challenges: 3
+        competencies: [observability, k8s-workloads]
+        prerequisites: [ch13-health-reliability]
+        story: "The dashboard is green but customers report slow coffee recommendations. We need to see inside."
+
+      - id: ch17-delivery
+        title: "The Pipeline"
+        subtitle: Delivery & Deployment Workflows
+        lessons: 4
+        challenges: 3
+        competencies: [delivery, dockerfile, k8s-workloads]
+        prerequisites: [ch13-health-reliability]
+        story: "Dave deployed from his laptop again. We need a real delivery pipeline."
+
+      - id: ch18-incident-response
+        title: "The On-Call Shift"
+        subtitle: Incident Response & Postmortems
+        lessons: 3
+        challenges: 3
+        competencies: [incident-response, observability, k8s-health]
+        prerequisites: [ch16-observability]
+        story: "Your first on-call shift. The pager goes off at 2 AM. This time you have the tools."
+
+    boss:
+      id: boss-platform-capstone
+      title: "The Full Platform"
+      subtitle: Platform Engineering Capstone
+      challenges: 1
+      competencies: [observability, delivery, incident-response, k8s-health, k8s-security]
+      prerequisites: [ch16-observability, ch17-delivery, ch18-incident-response]
+      story: >
+        Take an application from source code to production: build pipeline, registry,
+        K8s deployment, observability, controlled release, and handle a production
+        incident mid-rollout. The final exam.
+
+# ─── Deep Dives (Optional, unlock after prerequisites) ────────────────────────
+
+deep_dives:
+  linux-internals:
+    title: "Under the Hood"
+    subtitle: Linux Internals for Container Engineers
+    difficulty: advanced
+    estimated_hours: 4-6
+    competencies: [linux-fundamentals, container-runtime]
+    prerequisites: [ch06-process-management]
+    topics: [namespaces, cgroups, OverlayFS, /proc, capabilities, seccomp]
+    description: >
+      Explore the Linux kernel features that make containers possible.
+      Not theory — you'll create namespaces by hand and watch cgroups limit processes.
+
+  advanced-networking:
+    title: "The Wire"
+    subtitle: Advanced Container Networking
+    difficulty: advanced
+    estimated_hours: 4-6
+    competencies: [networking-fundamentals, docker-networking, k8s-networking]
+    prerequisites: [ch04-networking, ch11-k8s-networking]
+    topics: [iptables, veth pairs, CNI, kube-proxy, service mesh concepts]
+    description: >
+      Trace a packet from browser to pod. Understand iptables rules, veth pairs,
+      CNI plugins, and why kube-proxy rewrites destination addresses.
+
+  container-security:
+    title: "The Vault"
+    subtitle: Advanced Container Security
+    difficulty: advanced
+    estimated_hours: 4-6
+    competencies: [docker-security, k8s-security]
+    prerequisites: [ch08-docker-security, ch15-k8s-security]
+    topics: [rootless Docker, seccomp profiles, AppArmor, supply chain, signing, scanning]
+    description: >
+      Go beyond the basics. Rootless Docker, custom seccomp profiles,
+      image signing, vulnerability scanning, and supply-chain security.
+
+  multi-architecture:
+    title: "The Universal Bean"
+    subtitle: Multi-Platform Container Builds
+    difficulty: intermediate
+    estimated_hours: 3-4
+    competencies: [dockerfile]
+    prerequisites: [ch05-compose]  # Moved from ch02 — learner needs broader Docker fluency before buildx
+    topics: [buildx, ARM64/AMD64, manifest lists, cross-compilation, QEMU]
+    description: >
+      Build images that run on any architecture. Understand why your M1 Mac
+      builds images that fail on x86 servers, and how to fix it.
+
+# ─── Interview Mode ───────────────────────────────────────────────────────────
+
+interview_modes:
+  conceptual:
+    label: Conceptual Interview
+    description: >
+      The AI asks progressively harder Docker/K8s questions, evaluates reasoning
+      quality, and probes follow-ups. Tests mental models, not memorized commands.
+    unlock_after: world-1-docker-foundations
+
+  troubleshooting:
+    label: Troubleshooting Interview
+    description: >
+      The AI presents symptoms, logs, and metrics. You diagnose without seeing
+      the underlying problem. Tests systematic debugging under pressure.
+    unlock_after: world-2-docker-engineering
+
+  architecture:
+    label: Architecture Interview
+    description: >
+      Design a containerized/Kubernetes deployment for a given scenario.
+      Defend tradeoffs, handle follow-up constraints, and explain alternatives.
+    unlock_after: world-3-kubernetes-core

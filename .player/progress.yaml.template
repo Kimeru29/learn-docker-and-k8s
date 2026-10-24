@@ -1,65 +1,343 @@
-# Learn Docker & K8s - Player Progress
+# Learn Docker & K8s - Player Progress (v2)
 # This file is managed by the AI game engine. You can edit it manually if needed.
+# See curriculum/map.yaml for the full world/chapter structure.
+
+version: 2
 
 player:
   started_at:
-  language: auto
+  language: auto    # AI detects from conversation (IETF tags: en, es, zh-TW, ja, etc.)
+  preferences:
+    narrative_level: full    # full | light | minimal — how much story the player wants
+    difficulty: adaptive     # adaptive | easy | normal | hard
   environment:
+    os:
+    arch:
     docker:
     compose:
-    os:
+    kubectl:
+    kind:
+    docker_variant:          # docker-desktop | colima | rancher-desktop | native-linux | podman
+    platform:                # e.g., linux/arm64
 
-chapters:
-  ch01-containers:
+# ─── World & Chapter Progress ─────────────────────────────────────────────────
+
+worlds:
+  world-1-docker-foundations:
+    status: not-started      # not-started | in-progress | complete
+    chapters:
+      ch01-containers:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch02-images:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch03-storage:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch04-networking:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+    boss:
+      boss-docker-diagnosis:
+        status: not-started
+        challenges: []
+        current_hint_level: 0
+
+  world-2-docker-engineering:
     status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-  ch02-image-optimization:
+    chapters:
+      ch05-compose:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch06-process-management:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch07-troubleshooting:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+      ch08-docker-security:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+    boss:
+      boss-production-docker:
+        status: not-started
+        challenges: []
+        current_hint_level: 0
+
+  world-3-kubernetes-core:
     status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-  ch03-persistence:
-    status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-  ch04-networking:
-    status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-  ch05-compose:
-    status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-  ch06-k8s-intro:
-    status: not-started
-    lessons: []
-    challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
     kind_cluster:
-    namespace:
-  ch07-k8s-production:
+    chapters:
+      ch09-k8s-architecture:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch10-workloads:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch11-k8s-networking:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch12-k8s-storage:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+    boss:
+      boss-k8s-incident:
+        status: not-started
+        challenges: []
+        current_hint_level: 0
+        namespace:
+
+  world-4-kubernetes-production:
+    status: not-started
+    chapters:
+      ch13-health-reliability:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch14-scheduling:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch15-k8s-security:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+    boss:
+      boss-great-latte-leak:
+        status: not-started
+        challenges: []
+        current_hint_level: 0
+        namespace:
+
+  world-5-platform-engineering:
+    status: not-started
+    chapters:
+      ch16-observability:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch17-delivery:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+      ch18-incident-response:
+        status: not-started
+        lessons: []
+        challenges: []
+        skip_quiz_passed:
+        quiz_score:
+        current_hint_level: 0
+        namespace:
+    boss:
+      boss-platform-capstone:
+        status: not-started
+        challenges: []
+        current_hint_level: 0
+        namespace:
+
+# ─── Deep Dives (Optional) ────────────────────────────────────────────────────
+
+deep_dives:
+  linux-internals:
     status: not-started
     lessons: []
     challenges: []
-    skip_quiz_passed:
-    quiz_score:
-    current_hint_level: 0
-    kind_cluster:
-    namespace:
+  advanced-networking:
+    status: not-started
+    lessons: []
+    challenges: []
+  container-security:
+    status: not-started
+    lessons: []
+    challenges: []
+  multi-architecture:
+    status: not-started
+    lessons: []
+    challenges: []
+
+# ─── Competency Tracking ──────────────────────────────────────────────────────
+
+competencies:
+  docker-cli:
+    level: 0             # 0=unexposed, 1=introduced, 2=practicing, 3=competent, 4=proficient
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  dockerfile:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  container-runtime:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  docker-networking:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  docker-storage:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  docker-compose:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  docker-security:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  docker-troubleshooting:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-architecture:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-workloads:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-networking:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-storage:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-configuration:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-health:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-scheduling:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  k8s-security:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  observability:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  delivery:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  incident-response:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  linux-fundamentals:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+  networking-fundamentals:
+    level: 0
+    challenges_passed: 0
+    hints_used: 0
+    first_attempts: 0
+
+# ─── Interview Mode History ───────────────────────────────────────────────────
+
+interview_sessions: []
+# Each entry: { mode: conceptual|troubleshooting|architecture, date: ..., score: ..., notes: ... }

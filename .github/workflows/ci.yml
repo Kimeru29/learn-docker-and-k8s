@@ -1,0 +1,89 @@
+name: Curriculum CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Tier 1: Structural (fast, no Docker required) ──────────────────────────
+  structural:
+    name: Structural & Consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Quick structural checks
+        run: bash tests/test-curriculum.sh --quick
+
+      - name: Full structural + portability
+        run: bash tests/test-curriculum.sh --full
+
+      - name: Engine lifecycle tests
+        run: bash tests/test-lifecycle.sh
+
+      - name: Bash syntax check (all scripts)
+        run: find engine/ tests/ curriculum/ -name "*.sh" -exec bash -n {} +
+
+      - name: No stale legacy references
+        run: |
+          STALE=$(grep -rn "curriculum/ch0[0-9]" engine/ .claude/ .devin/ curriculum/ AGENTS.md CLAUDE.md README.md 2>/dev/null | grep -v "test-curriculum.sh" || true)
+          if [ -n "$STALE" ]; then
+            echo "Found stale references to old curriculum paths:"
+            echo "$STALE"
+            exit 1
+          fi
+          echo "No stale references found."
+
+  # ─── Tier 2: Docker functional (requires Docker) ────────────────────────────
+  docker-functional:
+    name: Docker Functional Tests
+    runs-on: ubuntu-latest
+    needs: structural
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker version
+        run: docker version
+
+      - name: Run Docker boss-fight tests
+        run: bash tests/test-functional.sh --docker
+        timeout-minutes: 15
+
+  # ─── Tier 3: Kubernetes functional (optional, requires kind) ────────────────
+  k8s-functional:
+    name: Kubernetes Functional Tests
+    runs-on: ubuntu-latest
+    needs: structural
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'test-k8s')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      - name: Install Helm
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          helm version
+
+      - name: Verify kubectl
+        run: kubectl version --client
+
+      - name: Create kind cluster
+        run: kind create cluster --name learn-k8s --wait 120s
+
+      - name: Verify cluster
+        run: kubectl cluster-info --context kind-learn-k8s
+
+      - name: Run Kubernetes boss-fight tests
+        run: bash tests/test-functional.sh --k8s
+        timeout-minutes: 20
+
+      - name: Cleanup kind cluster
+        if: always()
+        run: kind delete cluster --name learn-k8s 2>/dev/null || true

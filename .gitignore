@@ -1,8 +1,12 @@
 # Player progress (personal to each player)
 .player/progress.yaml
+.player/workspace/
 
 # Keep the template
 !.player/progress.yaml.template
+
+# Local progress migration backups
+.player/progress.yaml.v1-backup.*
 
 # OS files
 .DS_Store
@@ -16,5 +20,14 @@ Thumbs.db
 node_modules/
 *.log
 .history/
+
+# Test artifacts
+tests/results/
+
+# Known-good solutions (kept out of learner view in forks)
+# Maintainers: these exist in tests/solutions/ and are used by CI
+# They should NOT be exposed as hints during gameplay
+
 # Research materials (not needed for the game itself)
 # learn-devops/
+_legacy/
