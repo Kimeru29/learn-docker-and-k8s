@@ -61,7 +61,7 @@ Unlock based on prerequisites (see `map.yaml`):
 - **Linux Internals** — namespaces, cgroups, OverlayFS (after ch06)
 - **Advanced Networking** — iptables, veth, CNI, kube-proxy (after ch04 + ch11)
 - **Container Security** — rootless, seccomp, signing, scanning (after ch08 + ch15)
-- **Multi-Architecture** — buildx, ARM64/AMD64, manifest lists (after ch02)
+- **Multi-Architecture** — buildx, ARM64/AMD64, manifest lists (after ch05-compose)
 
 ### Boss Fights
 

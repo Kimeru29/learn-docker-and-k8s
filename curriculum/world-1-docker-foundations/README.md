@@ -113,7 +113,8 @@ Completing World 1 (all four chapters + boss fight) unlocks:
 
 - **World 2: Docker Engineering** (Docker Compose, environment management, multi-container orchestration)
 - **Interview Mode: Conceptual** (progressive Docker questions testing your mental models)
-- **Deep Dive: Multi-Architecture** (buildx, ARM64/AMD64, manifest lists)
+
+The **Multi-Architecture** deep dive becomes available after Ch05: Compose.
 
 ---
 
